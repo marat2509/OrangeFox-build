@@ -48,14 +48,10 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    permissions:
-      contents: write
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-              
+
     - name: Clean-up
       uses: rokibhasansagar/slimhub_actions@main
 
@@ -63,14 +59,14 @@ jobs:
       uses: pierotofy/set-swap-space@master
       with:
         swap-size-gb: 12
-      
+
     - name: Build Environment
       run: |
         sudo apt install aria2 -y
         git clone https://gitlab.com/OrangeFox/misc/scripts
         cd scripts
         sudo bash setup/android_build_env.sh
-      
+
     - name: Set-up Manifest
       run: |
         cd ${GITHUB_WORKSPACE}
@@ -92,7 +88,7 @@ jobs:
         cond: ${{ github.event.inputs.MANIFEST_BRANCH == '11.0' || github.event.inputs.MANIFEST_BRANCH == '12.1' }}
         if_true: lunch twrp_${{ github.event.inputs.DEVICE_NAME }}-eng && make clean && mka adbd ${{ github.event.inputs.BUILD_TARGET }}image
         if_false: lunch omni_${{ github.event.inputs.DEVICE_NAME }}-eng && make clean && mka ${{ github.event.inputs.BUILD_TARGET }}image
-        
+
     - name: Building OrangeFox
       run: |
         cd ${GITHUB_WORKSPACE}/OrangeFox
@@ -100,10 +96,6 @@ jobs:
         source build/envsetup.sh
         set -e
         ${{ steps.fox_branch.outputs.value }}
-
-    - name: Set Build Date # For Build Date Info, currently using Asia/Manila
-      run: |
-        echo "BUILD_DATE=$(TZ=Europe/Minsk date +%Y%m%d)" >> $GITHUB_ENV
 
     - name: Check if Recovery Exist
       run: |
@@ -119,9 +111,17 @@ jobs:
             echo "Recovery out directory is empty."
         fi
 
+    - name: Generate job summary
+      run: |
+        {
+          echo "|   Recovery tree commit | $(git --git-dir $GITHUB_WORKSPACE/OrangeFox/${{ github.event.inputs.DEVICE_PATH }}/.git rev-parse --short origin/HEAD) |"
+          echo "|   Recovery base commit | $(git --git-dir $GITHUB_WORKSPACE/OrangeFox/bootable/recovery/.git rev-parse --short origin/HEAD) |"
+          echo "| Recovery vendor commit | $(git --git-dir $GITHUB_WORKSPACE/OrangeFox/bootable/vendor/.git rev-parse --short origin/HEAD) |"
+        } >> $GITHUB_STEP_SUMMARY
+
     - name: Archive code coverage results
       uses: actions/upload-artifact@v3
       with:
         path: |
-          OrangeFox/fox_${{ github.event.inputs.MANIFEST_BRANCH }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.img
-          OrangeFox/fox_${{ github.event.inputs.MANIFEST_BRANCH }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.zip
+          OrangeFox/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.img
+          OrangeFox/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.zip
