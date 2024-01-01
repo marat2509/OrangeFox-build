@@ -10,7 +10,7 @@ Compile your first custom recovery from OrangeFox Recovery Project using Github 
  * Device Tree Branch (Your device tree repository branch)
  * Device Name (Your device codename)
  * Device Path (device/brand/codename)
- * Build Target (boot, reecovery, vendorboot)
+ * Build Target (boot, recovery, vendorboot)
 
  # Note
  * Initially, it only have four default choices for fox branch; 12.1, 11.0. If there's more to it, feel free to modify the .yml configurations.
