@@ -111,8 +111,8 @@ jobs:
         fi
 
     - name: Archive code coverage results
-        uses: actions/upload-artifact@v3
-        with:
-          path: |
-            OrangeFox/fox_12.1/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.img
-            OrangeFox/fox_12.1/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.zip
+      uses: actions/upload-artifact@v3
+      with:
+        path: |
+          OrangeFox/fox_12.1/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.img
+          OrangeFox/fox_12.1/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.zip
