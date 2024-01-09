@@ -109,3 +109,4 @@ jobs:
         path: |
           OrangeFox/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.img
           OrangeFox/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.zip
+        name: recovery
