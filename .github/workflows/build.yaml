@@ -15,8 +15,8 @@ on:
         default: '12.1'
         type: choice
         options:
-        - 12.1
-        - 11.0
+          - 12.1
+          - 11.0
       DEVICE_TREE:
         description: 'Custom Recovery Tree'
         required: true
@@ -125,3 +125,4 @@ jobs:
         path: |
           OrangeFox/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.img
           OrangeFox/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/OrangeFox*.zip
+        name: recovery
