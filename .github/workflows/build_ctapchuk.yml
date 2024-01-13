@@ -65,12 +65,15 @@ jobs:
       
     - name: Set-up Manifest
       run: |
-        mkdir -p ${GITHUB_WORKSPACE}/OrangeFox
-        cd ${GITHUB_WORKSPACE}/OrangeFox
+        cd ${GITHUB_WORKSPACE}
         git config --global user.name "$GITHUB_ACTOR"
         git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
-        repo init --depth=1 -u https://github.com/Ctapchuk/platform_manifest_ofrp_aosp.git -b ofrp-12.1
-        repo sync
+        git clone https://gitlab.com/OrangeFox/sync.git
+        cd sync
+        ./orangefox_sync.sh --branch ${{ github.event.inputs.MANIFEST_BRANCH }} --path ${GITHUB_WORKSPACE}/OrangeFox
+        cd $(GITHUB_WORKSPACE)/OrangeFox
+        rm -rf bootable/recovery
+        git clone -b fox_12.1 https://github.com/Ctapchuk/android_bootable_recovery-OFRP bootable/recovery
     - name: Clone Device Tree
       run: |
         cd ${GITHUB_WORKSPACE}/OrangeFox
