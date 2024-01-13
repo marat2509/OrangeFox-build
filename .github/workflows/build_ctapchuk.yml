@@ -70,7 +70,7 @@ jobs:
         git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
         git clone https://gitlab.com/OrangeFox/sync.git
         cd sync
-        ./orangefox_sync.sh --branch ${{ github.event.inputs.MANIFEST_BRANCH }} --path ${GITHUB_WORKSPACE}/OrangeFox
+        ./orangefox_sync.sh --branch ${{ github.event.inputs.MANIFEST_BRANCH }} --path ${{ github.workspace }}/OrangeFox
         cd $(GITHUB_WORKSPACE)/OrangeFox
         rm -rf bootable/recovery
         git clone -b fox_12.1 https://github.com/Ctapchuk/android_bootable_recovery-OFRP bootable/recovery
