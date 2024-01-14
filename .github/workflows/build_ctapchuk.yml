@@ -34,7 +34,11 @@ on:
         - boot
         - recovery
         - vendorboot
-
+      DEBUG_ENABLED:
+        type: boolean
+        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
+        required: false
+        default: false
 jobs:
   build:
     name: Build
@@ -85,6 +89,7 @@ jobs:
       run: |
         cd ${GITHUB_WORKSPACE}/OrangeFox
         set +e
+        export OF_USE_LZMA_COMPRESSION=1
         source build/envsetup.sh
         set -e
         lunch twrp_${{ github.event.inputs.DEVICE_NAME }}-eng && make clean && mka adbd ${{ github.event.inputs.BUILD_TARGET }}image
@@ -107,6 +112,10 @@ jobs:
         else
             echo "Recovery out directory is empty."
         fi
+
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
+      if: ${{ github.event_name == 'workflow_dispatch' && inputs.DEBUG_ENABLED }}
 
     - name: Archive code coverage results
       uses: actions/upload-artifact@v3
