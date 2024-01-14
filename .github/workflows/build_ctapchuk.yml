@@ -74,7 +74,7 @@ jobs:
         cd ${GITHUB_WORKSPACE}/OrangeFox
         rm -rf bootable/recovery && git clone -b fox_12.1 https://github.com/Ctapchuk/android_bootable_recovery-OFRP bootable/recovery
         rm -rf vendor/recovery && git clone -b fox_12.1 https://github.com/Ctapchuk/android_vendor_ofrp vendor/recovery
-        rm -rf build && git clone -b android-12.1 https://github.com/Ctapchuk/android_build_ofrp build
+        rm -rf build/make && git clone -b android-12.1 https://github.com/Ctapchuk/android_build_ofrp build/make
 
     - name: Clone Device Tree
       run: |
