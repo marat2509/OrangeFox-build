@@ -114,8 +114,9 @@ jobs:
     - name: Generate job summary
       run: |
         {
-          echo "|   Recovery tree commit | $(git -C ${GITHUB_WORKSPACE}/OrangeFox/${{ github.event.inputs.DEVICE_PATH }} rev-parse --short origin/HEAD) |"
-          echo "|   Recovery base commit | $(git -C ${GITHUB_WORKSPACE}/OrangeFox/bootable/recovery rev-parse --short origin/HEAD) |"
+          echo "| Recovery tree | Recovery base |"
+          echo "| :---: | :---: |"
+          echo "| $(git -C $GITHUB_WORKSPACE/OrangeFox/${{ github.event.inputs.DEVICE_PATH }} rev-parse --short origin/$(git -C $GITHUB_WORKSPACE/OrangeFox/${{ github.event.inputs.DEVICE_PATH }} rev-parse --abbrev-ref HEAD)) | $(git -C $GITHUB_WORKSPACE/OrangeFox/bootable/recovery rev-parse --short origin/$(git -C $GITHUB_WORKSPACE/OrangeFox/bootable/recovery rev-parse --abbrev-ref HEAD)) |"
         } >> $GITHUB_STEP_SUMMARY
 
     - name: Setup tmate session

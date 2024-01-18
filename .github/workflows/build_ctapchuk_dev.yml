@@ -103,6 +103,14 @@ jobs:
             echo "Recovery out directory is empty."
         fi
 
+    - name: Generate job summary
+      run: |
+        {
+          echo "| Recovery tree | Recovery base |"
+          echo "| :---: | :---: |"
+          echo "| $(git -C $GITHUB_WORKSPACE/OrangeFox/${{ github.event.inputs.DEVICE_PATH }} rev-parse --short origin/$(git -C $GITHUB_WORKSPACE/OrangeFox/${{ github.event.inputs.DEVICE_PATH }} rev-parse --abbrev-ref HEAD)) | $(git -C $GITHUB_WORKSPACE/OrangeFox/bootable/recovery rev-parse --short origin/$(git -C $GITHUB_WORKSPACE/OrangeFox/bootable/recovery rev-parse --abbrev-ref HEAD)) |"
+        } >> $GITHUB_STEP_SUMMARY
+
     - name: Archive code coverage results
       uses: actions/upload-artifact@v3
       with:
